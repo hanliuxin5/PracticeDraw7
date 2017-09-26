@@ -39,16 +39,25 @@ public class Practice01ArgbEvaluatorLayout extends RelativeLayout {
         animateBt.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                ObjectAnimator animator=ObjectAnimator.ofFloat(view,"angle",0f,-30f);
-                animator.setInterpolator(new LinearInterpolator());
-                animator.setDuration(500);
+                ObjectAnimator animator1 = ObjectAnimator.ofFloat(view, "degreeY", 0, -45);
+                animator1.setDuration(1000);
+                animator1.setStartDelay(500);
 
-                ObjectAnimator wave=ObjectAnimator.ofFloat(view,"wave",0f,10f);
-                wave.setInterpolator(new LinearInterpolator());
-                wave.setDuration(500);
+                ObjectAnimator animator2 = ObjectAnimator.ofFloat(view, "degreeZ", 0, 270);
+                animator2.setDuration(1000);
+                animator2.setStartDelay(500);
 
-                AnimatorSet animationSet=new AnimatorSet();
-                animationSet.playSequentially(animator,wave);
+                ObjectAnimator animator3 = ObjectAnimator.ofFloat(view, "fixDegreeY", 0, 30);
+                animator3.setDuration(500);
+                animator3.setStartDelay(500);
+
+                AnimatorSet animationSet = new AnimatorSet();
+                view.reset();
+//                animationSet.playSequentially(animator2);
+
+//                animationSet.playSequentially(animator2,animator3);
+//                animationSet.playSequentially(animator1,animator2);
+                animationSet.playSequentially(animator1, animator2, animator3);
                 animationSet.start();
             }
         });
