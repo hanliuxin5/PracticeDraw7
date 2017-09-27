@@ -44,7 +44,7 @@ public class Practice01ArgbEvaluatorLayout extends RelativeLayout {
                 animator1.setStartDelay(500);
 
                 ObjectAnimator animator2 = ObjectAnimator.ofFloat(view, "degreeZ", 0, 270);
-                animator2.setDuration(1000);
+                animator2.setDuration(10000);
                 animator2.setStartDelay(500);
 
                 ObjectAnimator animator3 = ObjectAnimator.ofFloat(view, "fixDegreeY", 0, 30);
@@ -54,10 +54,9 @@ public class Practice01ArgbEvaluatorLayout extends RelativeLayout {
                 AnimatorSet animationSet = new AnimatorSet();
                 view.reset();
 //                animationSet.playSequentially(animator2);
-
 //                animationSet.playSequentially(animator2,animator3);
-//                animationSet.playSequentially(animator1,animator2);
-                animationSet.playSequentially(animator1, animator2, animator3);
+                animationSet.playSequentially(animator1,animator2);
+//                animationSet.playSequentially(animator1, animator2, animator3);
                 animationSet.start();
             }
         });

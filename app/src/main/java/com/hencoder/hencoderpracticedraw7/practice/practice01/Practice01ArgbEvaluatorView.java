@@ -10,6 +10,7 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.Printer;
 import android.view.View;
 
@@ -54,10 +55,11 @@ public class Practice01ArgbEvaluatorView extends View {
         paint2.setTextSize(30);
 
         paint3.setColor(Color.RED);
-        paint3.setStrokeWidth(40);
+        paint3.setStyle(Paint.Style.STROKE);
+        paint3.setStrokeWidth(20);
 
         paint4.setColor(Color.BLUE);
-        paint4.setStrokeWidth(40);
+        paint4.setStrokeWidth(20);
 
         camera = new Camera();
         matrix = new Matrix();
@@ -78,13 +80,36 @@ public class Practice01ArgbEvaluatorView extends View {
         float x = centerX - bitmapWidth / 2;
         float y = centerY - bitmapHeight / 2;
 
+
+//        matrix.reset();
+//        canvas.save();
+//        camera.save();
+//        camera.rotateY(degreeY);
+//        camera.getMatrix(matrix);
+//        camera.restore();
+//        matrix.postRotate(-degreeZ);
+//        matrix.postTranslate(centerX, centerY);
+//        matrix.preRotate(degreeZ);
+//        matrix.preTranslate(-centerX, -centerY);
+//        canvas.concat(matrix);
+//        canvas.drawBitmap(bitmap, x, y, paint);
+//        canvas.restore();
+
+
+        //画变换的一半
+        //先旋转，再裁切，再使用camera执行3D动效,**然后保存camera效果**,最后再旋转回来
+//        degreeZ = 15;
         canvas.save();
         camera.save();
         canvas.translate(centerX, centerY);
         canvas.rotate(-degreeZ);
         camera.rotateY(degreeY);
         camera.applyToCanvas(canvas);
+        //计算裁切参数时清注意，此时的canvas的坐标系已经移动
         canvas.clipRect(0, -centerY, centerX, centerY);
+        canvas.drawRect(0, -centerY, centerX, centerY, paint2);
+        canvas.drawPoint(0, -centerY, paint3);
+        canvas.drawPoint(centerX, centerY, paint4);
         canvas.rotate(degreeZ);
         canvas.translate(-centerX, -centerY);
         camera.restore();
@@ -98,6 +123,8 @@ public class Practice01ArgbEvaluatorView extends View {
         canvas.rotate(-degreeZ);
         //计算裁切参数时清注意，此时的canvas的坐标系已经移动
         canvas.clipRect(-centerX, -centerY, 0, centerY);
+        canvas.drawRect(-centerX + 50, -centerY + 50, 0 - 50, centerY - 50, paint3);
+        canvas.drawPoint(0, -centerY, paint4);
         //此时的canvas的坐标系已经旋转，所以这里是rotateY
         camera.rotateY(fixDegreeY);
         camera.applyToCanvas(canvas);
@@ -106,8 +133,6 @@ public class Practice01ArgbEvaluatorView extends View {
         camera.restore();
         canvas.drawBitmap(bitmap2, x, y, paint);
         canvas.restore();
-
-
     }
 
     /**
